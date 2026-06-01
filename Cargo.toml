@@ -1,0 +1,34 @@
+[package]
+name = "rsomics-kinship"
+version = "0.1.0"
+description = "KING-robust kinship coefficients between sample pairs from a PLINK1 fileset (plink2 --make-king-table)"
+edition = "2024"
+rust-version = "1.91"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/omics-rust/rsomics-kinship"
+authors = ["Zane Leong <efd@live.com>"]
+categories = ["science"]
+keywords = ["plink", "kinship", "king", "relatedness", "gwas"]
+
+[[bin]]
+name = "rsomics-kinship"
+path = "src/main.rs"
+
+[lib]
+name = "rsomics_kinship"
+path = "src/lib.rs"
+doctest = false
+
+[[bench]]
+name = "bench"
+harness = false
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+anyhow = "1"
+rayon = "1"
+memmap2 = "0.9"
+
+[dev-dependencies]
+criterion = { version = "0.7", default-features = false, features = ["cargo_bench_support"] }
+tempfile = "3"
