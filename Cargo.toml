@@ -1,6 +1,6 @@
 [package]
 name = "rsomics-kinship"
-version = "0.1.0"
+version = "0.1.1"
 description = "KING-robust kinship coefficients between sample pairs from a PLINK1 fileset (plink2 --make-king-table)"
 edition = "2024"
 rust-version = "1.91"

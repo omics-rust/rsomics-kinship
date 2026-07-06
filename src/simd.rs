@@ -30,6 +30,27 @@ pub fn pair_counts(
     unsafe { pair_counts_avx2(het_i, het_j, hr_i, hr_j, ha_i, ha_j) }
 }
 
+/// Scalar reduction for non-x86 targets, where `supported()` is `false` so the
+/// caller's fast path is never runtime-selected — this keeps the call site
+/// compilable and stays byte-identical to the AVX2 popcount tree.
+#[cfg(not(target_arch = "x86_64"))]
+pub fn pair_counts(
+    het_i: &[u64],
+    het_j: &[u64],
+    hr_i: &[u64],
+    hr_j: &[u64],
+    ha_i: &[u64],
+    ha_j: &[u64],
+) -> (u64, u64) {
+    let mut hethet = 0u64;
+    let mut ibs0 = 0u64;
+    for w in 0..het_i.len() {
+        hethet += (het_i[w] & het_j[w]).count_ones() as u64;
+        ibs0 += ((hr_i[w] & ha_j[w]) | (ha_i[w] & hr_j[w])).count_ones() as u64;
+    }
+    (hethet, ibs0)
+}
+
 #[cfg(target_arch = "x86_64")]
 use std::arch::x86_64::*;
 
